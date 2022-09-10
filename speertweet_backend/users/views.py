@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status as s
 
-from .serializers import UserSerializer, PasswordChangeSerializer
+from .serializers import UserSerializer
 
 # Create your views here.
 
@@ -35,21 +35,6 @@ def user_details(request, username):
         return Response(serializer.data)
     except User.DoesNotExist:
         return Response(status=s.HTTP_404_NOT_FOUND)
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def change_password(request):
-    """
-    Change user password.
-    """
-    data = PasswordChangeSerializer(data=request.data)
-    if data.is_valid():
-        request.user.set_password(data.validated_data['password'])
-        request.user.save()
-        return Response(status=s.HTTP_200_OK)
-
-    return Response(data.errors, status=s.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

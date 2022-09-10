@@ -153,5 +153,5 @@ SIMPLE_JWT = {
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=users,posts'
+    '--cover-package=users,tweets'
 ]

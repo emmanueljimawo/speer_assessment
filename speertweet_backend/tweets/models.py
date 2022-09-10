@@ -20,10 +20,6 @@ class Tweet(models.Model):
         ]
 
     def __str__(self):
-        return f'<Post uuid={self.uuid} author={self.author}>'
+        return f'<Tweet uuid={self.uuid} author={self.author}>'
 
-    def get_comment_count(self):
-        """
-        Return the number of comments on this post.
-        """
-        return self.comments.count()
+    
