@@ -11,9 +11,17 @@ This is a simple social media application REST API built using **Django and Djan
 - Like/unlike a tweet
 - Retweet
 - Threading
-  
 
+**To run app**
+- cd speertweet_backend 
+- python manage.py runserver
+  
 ## REST Endpoints
+
+- `GET` -> `/accounts/me/` -> returns current user (_auth required_)
+- `POST` -> `/accounts/register/` -> register new user,
+- `POST` -> `/accounts/login/` -> login user,
+- `GET` -> `/accounts/<str:username>/` -> returns user details (_auth required_),
 
 - `GET` -> `/tweets/` -> returns current users tweets (_auth required_)
 - `POST` -> `/tweets/` -> create new tweet (_auth required_)
@@ -27,19 +35,23 @@ _View the users `urls.py` file for the user account endpoints._
 
 ## Coverage Report
 
+**To run test**
+- cd speertweet_backend 
+- python manage.py test
+
 ```
-Name                   Stmts   Miss  Cover
-------------------------------------------
+Name                    Stmts   Miss  Cover
+-------------------------------------------
 tweets/permissions.py       6      0   100%
-tweets/serializers.py      17      0   100%
-tweets/views.py            45      0   100%
-users/managers.py         18      7    61%
-users/serializers.py      23      0   100%
-users/views.py            32      2    94%
-------------------------------------------
-TOTAL                    141      9    94%
+tweets/serializers.py       8      0   100%
+tweets/views.py            38      0   100%
+users/managers.py          18      7    61%
+users/serializers.py       23      3    87%
+users/views.py             26      2    92%
+-------------------------------------------
+TOTAL                     127     20    84%
 ----------------------------------------------------------------------
-Ran 40 tests in 6.803s
+Ran 33 tests in 18.673s
 
 OK
 ```

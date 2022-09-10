@@ -160,52 +160,6 @@ class TestUserApi(APITestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, user_data.data)
 
-    def test_password_change(self):
-        res = self._register_user()
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
-        # login
-        res = self.client.post(reverse('token_login'), data={
-            'username': 'test',
-            'password': '123tester123',
-        })
-        token = res.data["access"]
-
-        res = self.client.post(reverse('change_password'),
-                               data={
-                                   'password': 'newpassword',
-                                   'confirm_password': 'newpassword',
-        },
-            format='json',
-            HTTP_AUTHORIZATION=f'Bearer {res.data["access"]}')
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-
-        user = User.objects.get(username='test')
-        self.assertTrue(user.check_password('newpassword'))
-
-    def test_bad_password_change(self):
-        res = self._register_user()
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-
-        # login
-        res = self.client.post(reverse('token_login'), data={
-            'username': 'test',
-            'password': '123tester123',
-        })
-        token = res.data["access"]
-
-        res = self.client.post(reverse('change_password'),
-                               data={
-                                   'password': 'newpassword',
-                                   'confirm_password': 'badpassword',
-        },
-            format='json',
-            HTTP_AUTHORIZATION=f'Bearer {res.data["access"]}')
-        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-
-        user = User.objects.get(username='test')
-        self.assertTrue(user.check_password('123tester123'))
-
     def test_token_refresh(self):
         res = self._register_user()
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)

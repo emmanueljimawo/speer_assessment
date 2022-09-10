@@ -42,7 +42,7 @@ class TweetListCreateTest(APITestCase):
         return super().setUpTestData()
 
     def setUp(self):
-        res = self.client.tweet(reverse('token_login'), data={
+        res = self.client.post(reverse('token_login'), data={
             'username': 'test',
             'password': 'password',
         })
@@ -76,7 +76,7 @@ class TweetListCreateTest(APITestCase):
         self.assertListEqual(tweets.data, res.data)
 
     def test_create_new_tweet(self):
-        res = self.client.tweet(
+        res = self.client.post(
             reverse('tweet_list_create'),
             data={'text': 'My new tweet'},
             HTTP_AUTHORIZATION=f'Bearer {self.token}'
@@ -99,14 +99,14 @@ class TweetDetailView(APITestCase):
         User.objects.create_user(username='test2', password='password')
 
     def setUp(self):
-        res = self.client.tweet(reverse('token_login'), data={
+        res = self.client.post(reverse('token_login'), data={
             'username': 'test',
             'password': 'password',
         })
         self.token = res.data.get('access')
         self.author = User.objects.get(pk=1)
 
-        res = self.client.tweet(reverse('token_login'), data={
+        res = self.client.post(reverse('token_login'), data={
             'username': 'test2',
             'password': 'password',
         })
@@ -158,7 +158,6 @@ class TweetDetailView(APITestCase):
 
     def test_update(self):
         p = Tweet.objects.get(pk=1)
-        self.assertFalse(p.edited)
 
         res = self.client.put(reverse('tweet_detail', kwargs={'uuid': p.uuid}),
                               data={'text': 'edited text'},
@@ -168,7 +167,6 @@ class TweetDetailView(APITestCase):
 
         p = Tweet.objects.get(pk=1)
         self.assertEqual(p.text, 'edited text')
-        self.assertTrue(p.edited)
 
     def test_update_no_user(self):
         p = Tweet.objects.get(pk=1)
@@ -210,14 +208,14 @@ class LikeTweetViewTest(APITestCase):
         User.objects.create_user(username='test2', password='password')
 
     def setUp(self):
-        res = self.client.tweet(reverse('token_login'), data={
+        res = self.client.post(reverse('token_login'), data={
             'username': 'test',
             'password': 'password',
         })
         self.token = res.data.get('access')
         self.author = User.objects.get(pk=1)
 
-        res = self.client.tweet(reverse('token_login'), data={
+        res = self.client.post(reverse('token_login'), data={
             'username': 'test2',
             'password': 'password',
         })
